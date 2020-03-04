@@ -1,22 +1,18 @@
 package com.pl.discord.commands.donut;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import com.pl.discord.DonutServer;
-import com.pl.discord.DonutUser;
+import com.pl.discord.objects.DonutServer;
+import com.pl.discord.objects.DonutUser;
 import com.pl.discord.Main;
-import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-
+import java.awt.*;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -26,7 +22,7 @@ public class Load extends Command {
         super.name = "load";
         super.aliases = new String[]{};
         super.category = new Category("Donut");
-        super.arguments = "[]";
+        super.arguments = "";
         super.help = "reloads the data";
     }
 
@@ -42,6 +38,13 @@ public class Load extends Command {
         try {
             File file = new File("./data/" + event.getGuild().getName().replace(' ', '_') + "/" + event.getGuild().getId() + ".json");
             if (file.exists()) {
+
+                try {
+                    Main.server.remove(Main.getServer(event.getGuild()));
+                } catch (Exception ignored){
+                }
+                Main.server.add(new DonutServer(event.getGuild()));
+                Main.server.get(Main.getServer(event.getGuild())).resetUser();
 
                 FileReader reader = new FileReader(
                         "./data/" + event.getGuild().getName().replace(' ', '_') + "/" + event.getGuild().getId() + ".json");
@@ -59,9 +62,17 @@ public class Load extends Command {
                         e.printStackTrace();
                     }
                 });
-                event.reply("Loaded data of " + event.getGuild().getName());
+                Main.server.get(Main.getServer(event.getGuild())).save(event.getGuild());
+                EmbedBuilder eb = new EmbedBuilder();
+                eb.setTitle("Loaded data of " + event.getGuild().getName());
+                eb.setColor(Color.BLUE);
+                event.reply(eb.build());
+                Main.printData();
             } else {
-                event.reply("Couldn't find that file");
+                EmbedBuilder eb = new EmbedBuilder();
+                eb.setTitle("Couldnt find the file of " + event.getGuild().getName());
+                eb.setColor(Color.RED);
+                event.reply(eb.build());
             }
 
         } catch (ParseException | IOException e) {
@@ -73,7 +84,10 @@ public class Load extends Command {
     private static void getUser(org.json.simple.JSONObject user, Guild guild) throws IOException {
         ObjectMapper m = new ObjectMapper();
         DonutUser myClass = m.readValue(user.toString(), DonutUser.class);
-        if (Main.getServer(guild) == -1){
+
+        myClass.setMining(false);
+
+        if (Main.getServer(guild) == -1) {
             Main.server.add(new DonutServer(guild));
         }
         Main.server.get(Main.getServer(guild)).add(myClass);

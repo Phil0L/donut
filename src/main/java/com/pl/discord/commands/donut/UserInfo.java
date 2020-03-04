@@ -2,12 +2,11 @@ package com.pl.discord.commands.donut;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import com.pl.discord.DonutUser;
+import com.pl.discord.objects.DonutUser;
 import com.pl.discord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 
-import javax.swing.plaf.IconUIResource;
 import java.awt.*;
 
 public class UserInfo extends Command {
@@ -22,8 +21,11 @@ public class UserInfo extends Command {
 
     @Override
     protected void execute(CommandEvent event) {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setColor(Color.RED);
         if (Main.getServer(event.getGuild()) == -1) {
-            event.reply("No one registered yet. Use %enter to register in Donut Kingdom");
+            eb.setTitle("No one registered yet. Use %enter to register in Donut Kingdom");
+            event.reply(eb.build());
         } else {
             int j = Main.getServer(event.getGuild());
             if (event.getArgs().isEmpty()) {
@@ -32,7 +34,8 @@ public class UserInfo extends Command {
                 if (i != -1) {
                     showInfo(Main.server.get(j).getUser().get(i), event);
                 } else {
-                    event.reply("You are not registered. Use %enter to register in Donut Kingdom");
+                    eb.setTitle("You are not registered. Use %enter to register in Donut Kingdom");
+                    event.reply(eb.build());
                 }
 
 
@@ -42,7 +45,8 @@ public class UserInfo extends Command {
                 if (i != -1) {
                     showInfo(Main.server.get(j).getUser().get(i), event);
                 } else {
-                    event.reply("This user is not registered. Use %enter [user] to register the user in Donut Kingdom");
+                    eb.setTitle("This user is not registered. Use %enter [user] to register the user in Donut Kingdom");
+                    event.reply(eb.build());
                 }
             }
         }
@@ -56,8 +60,16 @@ public class UserInfo extends Command {
 
         String coins = user.getCoins() + " | ";
         int temp = (int) user.getCoins();
-        int step = 100;
+
+        int step = 1000;
         int current = (temp / step);
+        for (int i = 0; i < current; i++) {
+            coins += ":credit_card: ";
+        }
+        temp -= ((temp / step) * step);
+
+        step = 100;
+        current = (temp / step);
         for (int i = 0; i < current; i++) {
             coins += ":gem: ";
         }
@@ -77,9 +89,9 @@ public class UserInfo extends Command {
         eb.addField("Coins", coins + "", false);
 
 
-
-        String donuts = user.getDonuts() + " | ";
-        temp = user.getDonuts();
+        String donuts = "";
+        //String donuts = user.getDonuts() + " | ";
+        //temp = user.getDonuts();
         step = 600;
         current = (temp / step);
         for (int i = 0; i < current; i++) {

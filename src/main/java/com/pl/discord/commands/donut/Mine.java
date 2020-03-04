@@ -3,7 +3,11 @@ package com.pl.discord.commands.donut;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.pl.discord.Main;
+import com.pl.discord.commands.simple.Ping;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
+
+import java.awt.*;
 
 public class Mine extends Command {
 
@@ -20,68 +24,96 @@ public class Mine extends Command {
         if (Main.getServer(event.getGuild()) != -1) {
             int i = Main.getServer(event.getGuild());
             if (Main.server.get(i).getMember(event.getMember()) != -1) {
-                new Thread(() -> {
-                    try {
-                        if (Main.server.get(i).getUser().get(Main.server.get(i).getMember(event.getMember())).isMining()) {
-                            event.reply("You are currently mining");
-                        } else {
+                EmbedBuilder eb = new EmbedBuilder();
+                eb.setColor(Color.RED);
+                if (Main.server.get(i).getUser().get(Main.server.get(i).getMember(event.getMember())).isMining()) {
+                    eb.setTitle("You are currently mining");
+                    event.reply(eb.build());
+                } else {
+                    new Thread(() -> {
+                        try {
+
+                            Ping.addThread();
                             Main.server.get(i).getUser().get(Main.server.get(i).getMember(event.getMember())).setMining(true);
-                            Message message = event.getTextChannel().sendMessage("%start").complete();
+                            eb.setColor(Color.ORANGE);
+                            eb.setTitle("start");
+                            Message message = event.getTextChannel().sendMessage(eb.build()).complete();
 
-                            message.editMessage(":clock1: " + event.getMember().getEffectiveName() + " is mining...").queue();
+                            eb.setTitle(":clock1: " + event.getMember().getEffectiveName() + " is mining...");
+                            message.editMessage(eb.build()).queue();
                             Thread.sleep((long) ((Math.random() * 500) + 1000));
 
-                            message.editMessage(":clock2: " + event.getMember().getEffectiveName() + " is mining...").queue();
+                            eb.setTitle(":clock2: " + event.getMember().getEffectiveName() + " is mining...");
+                            message.editMessage(eb.build()).queue();
                             Thread.sleep((long) ((Math.random() * 500) + 1000));
 
-                            message.editMessage(":clock3: " + event.getMember().getEffectiveName() + " is mining...").queue();
+                            eb.setTitle(":clock3: " + event.getMember().getEffectiveName() + " is mining...");
+                            message.editMessage(eb.build()).queue();
                             Thread.sleep((long) ((Math.random() * 500) + 1000));
 
-                            message.editMessage(":clock4: " + event.getMember().getEffectiveName() + " is mining...").queue();
+                            eb.setTitle(":clock4: " + event.getMember().getEffectiveName() + " is mining...");
+                            message.editMessage(eb.build()).queue();
                             Thread.sleep((long) ((Math.random() * 500) + 1000));
 
-                            message.editMessage(":clock5: " + event.getMember().getEffectiveName() + " is mining...").queue();
+                            eb.setTitle(":clock5: " + event.getMember().getEffectiveName() + " is mining...");
+                            message.editMessage(eb.build()).queue();
                             Thread.sleep((long) ((Math.random() * 500) + 1000));
 
-                            message.editMessage(":clock6: " + event.getMember().getEffectiveName() + " is mining...").queue();
+                            eb.setTitle(":clock6: " + event.getMember().getEffectiveName() + " is mining...");
+                            message.editMessage(eb.build()).queue();
                             Thread.sleep((long) ((Math.random() * 500) + 1000));
 
-                            message.editMessage(":clock7: " + event.getMember().getEffectiveName() + " is mining...").queue();
+                            eb.setTitle(":clock7: " + event.getMember().getEffectiveName() + " is mining...");
+                            message.editMessage(eb.build()).queue();
                             Thread.sleep((long) ((Math.random() * 500) + 1000));
 
-                            message.editMessage(":clock8: " + event.getMember().getEffectiveName() + " is mining...").queue();
+                            eb.setTitle(":clock8: " + event.getMember().getEffectiveName() + " is mining...");
+                            message.editMessage(eb.build()).queue();
                             Thread.sleep((long) ((Math.random() * 500) + 1000));
 
-                            message.editMessage(":clock9: " + event.getMember().getEffectiveName() + " is mining...").queue();
+                            eb.setTitle(":clock9: " + event.getMember().getEffectiveName() + " is mining...");
+                            message.editMessage(eb.build()).queue();
                             Thread.sleep((long) ((Math.random() * 500) + 1000));
 
-                            message.editMessage(":clock10: " + event.getMember().getEffectiveName() + " is mining...").queue();
+                            eb.setTitle(":clock10: " + event.getMember().getEffectiveName() + " is mining...");
+                            message.editMessage(eb.build()).queue();
                             Thread.sleep((long) ((Math.random() * 500) + 1000));
 
-                            message.editMessage(":clock11: " + event.getMember().getEffectiveName() + " is mining...").queue();
+                            eb.setTitle(":clock11: " + event.getMember().getEffectiveName() + " is mining...");
+                            message.editMessage(eb.build()).queue();
                             Thread.sleep((long) ((Math.random() * 500) + 1000));
 
-                            message.editMessage(":clock11: " + event.getMember().getEffectiveName() + " is mining...").queue();
+                            eb.setTitle(":clock12: " + event.getMember().getEffectiveName() + " is mining...");
+                            message.editMessage(eb.build()).queue();
                             Thread.sleep((long) ((Math.random() * 500) + 1000));
 
                             int value = (int) ((Math.random() * 10) + 10);
                             Main.server.get(i).getUser().get(Main.server.get(i).getMember(event.getMember())).addCoins(value);
                             Main.server.get(i).save(event.getGuild());
-                            message.editMessage(event.getMember().getEffectiveName() + " **mined " + value + " coins**").queue();
+                            eb.setTitle(":clock12: " + event.getMember().getEffectiveName() + " is mining...\n" + event.getMember().getEffectiveName() + " **mined " + value + " coins**");
+                            message.editMessage(eb.build()).queue();
                             Main.server.get(i).getUser().get(Main.server.get(i).getMember(event.getMember())).setMining(false);
+                            Ping.removeThread();
+
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
 
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                }).start();
+                    }).start();
+                }
 
             } else {
-                event.reply("You are not registered. Use %enter to register in Donut Kingdom");
+                EmbedBuilder eb = new EmbedBuilder();
+                eb.setColor(Color.RED);
+                eb.setTitle("You are not registered. Use %enter to register in Donut Kingdom");
+                event.reply(eb.build());
             }
         }else {
-            event.reply("You are not registered. Use %enter to register in Donut Kingdom");
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.setColor(Color.RED);
+            eb.setTitle("You are not registered. Use %enter to register in Donut Kingdom");
+            event.reply(eb.build());
         }
     }
 }

@@ -21,7 +21,7 @@ public class Disconnect extends Command {
     protected void execute(CommandEvent event) {
         stopRec(event);
         event.getGuild().getAudioManager().closeAudioConnection();
-        event.reply("**Disconnected!**");
+        event.reply(new EmbedBuilder().setColor(Color.ORANGE).setTitle("Disconnected").build());
     }
 
     private void stopRec(CommandEvent event){

@@ -1,4 +1,4 @@
-package com.pl.discord.commands.simple;
+package com.pl.discord.commands.fun;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
@@ -12,7 +12,7 @@ public class Fuck extends Command {
     public Fuck(){
         super.name = "fuck";
         super.aliases = new String[]{};
-        super.category = new Category("SimpleCommand");
+        super.category = new Category("Fun");
         super.arguments = "[chars]";
         super.help = "fucks eo up";
     }

@@ -2,8 +2,10 @@ package com.pl.discord.commands.voice.sound;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.pl.discord.commands.simple.Ping;
 import com.pl.discord.commands.voice.sound.Listeners.AudioReceiveListener;
 import com.pl.discord.commands.voice.sound.Listeners.AudioSendListener;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.sourceforge.lame.lowlevel.LameEncoder;
@@ -11,6 +13,7 @@ import net.sourceforge.lame.mp3.Lame;
 import net.sourceforge.lame.mp3.MPEGMode;
 
 import javax.sound.sampled.AudioFormat;
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -33,29 +36,35 @@ public class Clip extends Command {
     @Override
     protected void execute(CommandEvent event) {
 
-
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setColor(Color.RED);
 
         if (event.getGuild().getAudioManager().getConnectedChannel() == null) {
-            event.reply("I wasn't recording!");
+            eb.setTitle("I wasnt recording");
+            event.reply(eb.build());
             //return;
         }
 
-        if (event.getArgs() == null)
-            event.reply("You have to provide a time"); else
+        if (event.getArgs() == null){
+            eb.setTitle("You have to provide a time");
+            event.reply(eb.build());} else {
             args = event.getArgs().split(" ");
+        }
 
         int time;
         try {
             time = Integer.parseInt(args[0]);
         } catch (Exception ex) {
-            event.reply("Cannot read entered time");
+            eb.setTitle("Cannot read entered time");
+            event.reply(eb.build());
             return;
         }
 
 
 
         if (time <= 0) {
-            event.reply("Time must be greater than 0");
+            eb.setTitle("Time must be greater than 0");
+            event.reply(eb.build());
             return;
         }
 
@@ -66,8 +75,11 @@ public class Clip extends Command {
     public static void writeToFile(Guild guild, int time, TextChannel tc) {
 
         AudioReceiveListener ah = (AudioReceiveListener) guild.getAudioManager().getReceivingHandler();
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setColor(Color.RED);
         if (ah == null) {
-            tc.sendMessage("I wasn't recording!").queue();
+            eb.setTitle("I wasnt recording");
+            tc.sendMessage(eb.build()).queue();
             return;
         }
 
@@ -106,7 +118,9 @@ public class Clip extends Command {
 
                 new Thread(() -> {
                     try {
+                        Ping.addThread();
                         sleep(1000 * 20);
+                        Ping.removeThread();
                     } catch (Exception ex) {
                     }    //20 second life for files set to discord (no need to save)
 
@@ -132,7 +146,8 @@ public class Clip extends Command {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            tc.sendMessage("Unknown error sending file").queue();
+            eb.setTitle("Unknown error sending file");
+            tc.sendMessage(eb.build()).queue();
         }
     }
 

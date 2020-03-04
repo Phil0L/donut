@@ -24,10 +24,10 @@ public class Donuts extends Command {
             int amount = Integer.parseInt(args[2]);
             switch (args[1]) {
                 case "add":
-                    Main.server.get(Main.getServer(event.getGuild())).getUser().get(Main.server.get(Main.getServer(event.getGuild())).getMember(user)).addDonuts(amount);
+                    //Main.server.get(Main.getServer(event.getGuild())).getUser().get(Main.server.get(Main.getServer(event.getGuild())).getMember(user)).addDonuts(amount);
                     break;
                 case "remove":
-                    Main.server.get(Main.getServer(event.getGuild())).getUser().get(Main.server.get(Main.getServer(event.getGuild())).getMember(user)).removeDonuts(amount);
+                    //Main.server.get(Main.getServer(event.getGuild())).getUser().get(Main.server.get(Main.getServer(event.getGuild())).getMember(user)).removeDonuts(amount);
                     break;
             }
         } else {

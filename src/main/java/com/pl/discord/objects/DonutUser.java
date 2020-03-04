@@ -1,42 +1,50 @@
-package com.pl.discord;
+package com.pl.discord.objects;
 
 import net.dv8tion.jda.api.entities.Member;
+
+import java.util.ArrayList;
 
 public class DonutUser {
     private String name;
     private int level;
-    private int donuts;
+    //private int donuts;
     private long coins;
     private String startedVoice;
     private boolean mining;
 
-    public DonutUser(Member user){
+    private Location currentLocation;
+    private ArrayList<Item> inventory;
+
+
+    public DonutUser(Member user) {
         this.name = user.getEffectiveName();
         this.level = 1;
-        this.donuts = 0;
         this.coins = 0;
         this.startedVoice = "00:00:00:00:00:0000";
         this.mining = false;
+        this.inventory = new ArrayList<>();
+        this.currentLocation = null;
 
     }
 
+    // default Konstuktor for JSON
     public DonutUser() {
     }
 
-    public void joinedVoice(String s){
+    public void enterLocation(Location location){
+        this.currentLocation = location;
+    }
+
+    public void addItem(Item item){
+        this.inventory.add(item);
+    }
+
+    public void joinedVoice(String s) {
         this.startedVoice = s;
     }
 
-    public void setMining(boolean b){
+    public void setMining(boolean b) {
         this.mining = b;
-    }
-
-    public void addCoins(long coins) {
-        this.coins += coins;
-    }
-
-    public void addDonut(){
-        this.donuts++;
     }
 
     public void removeCoins(long coins) {
@@ -45,34 +53,19 @@ public class DonutUser {
             this.coins = 0;
     }
 
-    public void addCoins(int coins){
+    public void addCoins(int coins) {
         this.coins += coins;
         if (this.coins < 0)
             this.coins = 0;
     }
 
-    public void removeDonuts(int donuts){
-        this.donuts -= donuts;
-        if (this.donuts < 0)
-            this.donuts = 0;
-    }
-
-    public void addDonuts(int donuts){
-        this.donuts += donuts;
-        if (this.donuts < 0)
-            this.donuts = 0;
-    }
-
+    // Getter Methods
     public String getName() {
         return name;
     }
 
     public int getLevel() {
         return level;
-    }
-
-    public int getDonuts() {
-        return donuts;
     }
 
     public long getCoins() {
@@ -89,11 +82,11 @@ public class DonutUser {
 
     @Override
     public String toString() {
-        return "DonutUser{" +
-                "name='" + name + '\'' +
-                ", level=" + level +
-                ", donuts=" + donuts +
-                ", coins=" + coins +
-                '}';
+        return "\nuser:[" +
+                "name=" + name +
+                ",level=" + level +
+                ",items=" + "" +
+                ",coins=" + coins +
+                "]";
     }
 }

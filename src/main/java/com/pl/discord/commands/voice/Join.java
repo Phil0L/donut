@@ -2,7 +2,10 @@ package com.pl.discord.commands.voice;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.managers.AudioManager;
+
+import java.awt.*;
 
 public class Join extends Command {
 
@@ -20,7 +23,10 @@ public class Join extends Command {
         try {
             audio.openAudioConnection(event.getMember().getVoiceState().getChannel());
         } catch (Exception e) {
-            event.getTextChannel().sendMessage("You have to be in a voice channel").queue();
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.setColor(Color.RED);
+            eb.setTitle("You have to be in a Voicechannel");
+            event.getTextChannel().sendMessage(eb.build()).queue();
         }
 
     }

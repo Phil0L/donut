@@ -8,16 +8,13 @@ public class Clear extends Command {
     public Clear() {
         super.name = "clear";
         super.aliases = new String[]{"c","delete","incognito","burn","destroy"};
-        super.category = new Category("SimpleCommand");
+        super.category = new Category("Utilities");
         super.arguments = "";
-        super.help = "clears this Textchannel";
+        super.help = ":x: clears this Textchannel";
     }
 
     @Override
     protected void execute(CommandEvent event) {
-            event.getTextChannel().deleteMessageById(event.getTextChannel().getLatestMessageId()).queue(
-                    success -> {execute(event);},
-                    error -> {});
 
     }
 

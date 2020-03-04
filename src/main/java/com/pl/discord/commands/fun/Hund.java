@@ -1,4 +1,4 @@
-package com.pl.discord.commands.simple;
+package com.pl.discord.commands.fun;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
@@ -12,7 +12,7 @@ public class Hund extends Command {
     public Hund() {
         super.name = "duhund";
         super.aliases = new String[]{"hund","dh"};
-        super.category = new Category("SimpleCommand");
+        super.category = new Category("Fun");
         super.arguments = "[name]";
         super.help = "H.U.N.D";
     }

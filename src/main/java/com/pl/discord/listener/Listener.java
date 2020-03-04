@@ -1,6 +1,8 @@
 package com.pl.discord.listener;
 
+import com.jagrosh.jdautilities.command.CommandEvent;
 import com.pl.discord.Main;
+import com.pl.discord.commands.simple.Ping;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
@@ -16,6 +18,24 @@ public class Listener extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(@Nonnull GuildMessageReceivedEvent event) {
+
+        // check for ping message
+        switch (event.getMessage().getContentRaw()){
+            case "pingmessage1one":
+                Ping.getTime(1);
+                Ping.sendTime(2, event.getChannel());
+                break;
+            case "pingmessage2two":
+                Ping.getTime(2);
+                Ping.sendTime(3, event.getChannel());
+                break;
+            case "pingmessage3three":
+                Ping.getTime(3);
+                Ping.sendMessage(event.getChannel());
+                break;
+            default:
+                break;
+        }
 
         //add coins for sending messages
         if (Main.getServer(event.getGuild()) != -1) {
@@ -42,7 +62,9 @@ public class Listener extends ListenerAdapter {
 
     @Override
     public void onPrivateMessageReceived(@Nonnull PrivateMessageReceivedEvent event) {
-        System.out.println(event.getMessage().getContentRaw());
+        if (!event.getAuthor().isBot()) {
+            System.out.println(event.getMessage().getContentRaw());
+        }
     }
 
     @Override
@@ -151,10 +173,10 @@ public class Listener extends ListenerAdapter {
                     sb.append(" He mined ").append(coins).append(" coins in this time");
 
                 Main.server.get(i).getUser().get(Main.server.get(i).getMember(event.getMember())).joinedVoice("00:00:00:00:00:0000");
+                Main.server.get(i).getUser().get(Main.server.get(i).getMember(event.getMember())).addCoins(coins);
+                Main.server.get(i).save(event.getGuild());
 
                 event.getGuild().getTextChannels().get(1).sendMessage(sb.toString()).queue();
-
-                //TODO save added
             }
         } else {
 
