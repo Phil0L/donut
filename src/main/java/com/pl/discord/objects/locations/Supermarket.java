@@ -15,4 +15,9 @@ public class Supermarket extends Location {
         super.closes = 20;
         super.stock = new ArrayList<>();
     }
+
+    @Override
+    public void restock() {
+
+    }
 }

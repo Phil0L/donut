@@ -10,6 +10,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
+import org.w3c.dom.Text;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -42,8 +43,38 @@ public class PlayerManager {
         return musicManager;
     }
 
+    public void loadAndPlaySpotify(TextChannel channel, String trackUrl){
+        GuildMusicManager musicManager = getGuildMusicManager(channel.getGuild());
+        musicManager.player.setVolume(10);
+
+        playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
+            @Override
+            public void trackLoaded(AudioTrack track) {
+                play(musicManager, track);
+            }
+
+            @Override
+            public void playlistLoaded(AudioPlaylist playlist) {
+
+                AudioTrack track = playlist.getTracks().get(0);
+                play(musicManager, track);
+            }
+
+            @Override
+            public void noMatches() {
+
+            }
+
+            @Override
+            public void loadFailed(FriendlyException exception) {
+
+            }
+        });
+    }
+
     public void loadAndPlay(TextChannel channel, String trackUrl) {
         GuildMusicManager musicManager = getGuildMusicManager(channel.getGuild());
+        musicManager.player.setVolume(10);
 
         playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override

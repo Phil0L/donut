@@ -6,38 +6,8 @@ public class Item {
     public String name;
     public String command;
     public String emoji;
-    boolean stackable;
+    public boolean stackable;
+    public int rarity;
 
-    public Item(){
-        this.prize = 30;
-        this.name = "Casual Item";
-        this.command = "%buy casual-Item";
-        this.emoji = ":doughnut:";
-        this.stack = 1;
-    }
-
-    public Item(int stack){
-        this.prize = 30;
-        this.name = "Casual Item";
-        this.command = "%buy casual-Item";
-        this.emoji = ":doughnut:";
-        this.stack = stack;
-    }
-
-    public Item(int stack, String name){
-        this.prize = 30;
-        this.name = name;
-        this.command = "%buy " + name.toLowerCase().replace(' ', '-');
-        this.emoji = ":doughnut:";
-        this.stack = stack;
-    }
-
-    public Item(int stack, String name, String emoji){
-        this.prize = 30;
-        this.name = name;
-        this.command = "%buy " + name.toLowerCase().replace(' ', '-');
-        this.emoji = emoji;
-        this.stack = stack;
-    }
 
 }

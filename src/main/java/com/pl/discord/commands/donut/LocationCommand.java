@@ -55,12 +55,12 @@ public class LocationCommand extends Command {
 
     private void enter(Location loc, CommandEvent event) {
         if (loc.isOpen()){
+            if (loc.stock.size() <= 6)
+                loc.restock();
             EmbedBuilder eb = new EmbedBuilder();
-            eb.setTitle(loc.emoji + loc.name + ":").setColor(Color.ORANGE);
+            eb.setTitle(loc.emoji + " " + loc.name + ":").setColor(Color.ORANGE);
             for (int k = 0; k < loc.stock.size(); k++) {
-                eb.addField(loc.stock.get(k).name, loc.stock.get(k).command, true);
-                if (k % 3 == 2)
-                    eb.addBlankField(false);
+                eb.addField(loc.stock.get(k).emoji + " " + loc.stock.get(k).name + " (x" + loc.stock.get(k).stack + ")", loc.stock.get(k).command, false);
             }
             event.reply(eb.build());
         }else {

@@ -3,18 +3,52 @@ package com.pl.discord.listener;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.pl.discord.Main;
 import com.pl.discord.commands.simple.Ping;
+import com.pl.discord.commands.voice.music.Spotify;
+import com.pl.discord.commands.voice.music.handler.PlayerManager;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.react.GenericGuildMessageReactionEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
 import java.time.YearMonth;
 import java.util.Calendar;
 
 public class Listener extends ListenerAdapter {
+
+
+    @Override
+    public void onGenericGuildMessageReaction(@Nonnull GenericGuildMessageReactionEvent event) {
+        if (event.getMessageIdLong() == Spotify.messageID && !event.getUser().isBot()){
+            System.out.println(event.getReaction().getReactionEmote().getAsCodepoints());
+            if (event.getReaction().getReactionEmote().getAsCodepoints().equals("U+1f3b5")){
+                // play
+                PlayerManager manager = PlayerManager.getInstance();
+                for (int i = 0; i < Spotify.getPlaylistsTracks(Spotify.playlists[Spotify.current].getId()).length; i++){
+                    String search = "ytsearch:" + Spotify.getPlaylistsTracks(Spotify.playlists[Spotify.current].getId())[i].getTrack().getArtists()[0].getName() + "-" + Spotify.getPlaylistsTracks(Spotify.playlists[Spotify.current].getId())[i].getTrack().getName();
+                    manager.loadAndPlaySpotify(event.getChannel(), search);
+                }
+                Spotify.message.clearReactions().queue();
+
+                event.getChannel().sendMessage(new EmbedBuilder().setColor(new Color(30, 215, 96)).setTitle("Queued playlist").build()).queue();
+
+            }
+            if (event.getReaction().getReactionEmote().getAsCodepoints().equals("U+27a1")){
+                // next
+                Spotify.showPlaylist(Spotify.message, Spotify.playlists, ++Spotify.current);
+
+            }
+            if (event.getReaction().getReactionEmote().getAsCodepoints().equals("U+2b05")){
+                // prev
+                Spotify.showPlaylist(Spotify.message, Spotify.playlists, --Spotify.current);
+            }
+        }
+    }
 
     @Override
     public void onGuildMessageReceived(@Nonnull GuildMessageReceivedEvent event) {

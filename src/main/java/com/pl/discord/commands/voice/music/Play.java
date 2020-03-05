@@ -21,16 +21,20 @@ public class Play extends Command {
     @Override
     protected void execute(CommandEvent event) {
         TextChannel channel = event.getTextChannel();
-        String[] args;
+        String input;
 
         if (event.getArgs().isEmpty()) {
             channel.sendMessage("Please provide some arguments").queue();
             return;
         }else {
-             args = event.getArgs().split(" ");
+             if (!isUrl(event.getArgs()))
+                 input = "ytsearch:" + event.getArgs();
+             else
+                 input = event.getArgs().replaceAll(" ", "");
         }
 
-        String input = String.join(" ", args);
+
+
         PlayerManager manager = PlayerManager.getInstance();
         manager.loadAndPlay(event.getTextChannel(), input);
 

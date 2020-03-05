@@ -1,0 +1,1 @@
+worker: java -jar build/libs/donut-0.1-all.jar

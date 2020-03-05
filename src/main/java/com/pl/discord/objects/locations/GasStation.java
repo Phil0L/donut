@@ -15,4 +15,9 @@ public class GasStation extends Location {
         super.closes = 24;
         super.stock = new ArrayList<>();
     }
+
+    @Override
+    public void restock() {
+
+    }
 }

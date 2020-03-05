@@ -14,4 +14,9 @@ public class ClothingStore extends Location {
         super.closes = 18;
         super.stock = new ArrayList<>();
     }
+
+    @Override
+    public void restock() {
+
+    }
 }

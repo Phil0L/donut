@@ -16,4 +16,9 @@ public class Casino extends Location {
         super.stock = new ArrayList<>();
 
     }
+
+    @Override
+    public void restock() {
+
+    }
 }

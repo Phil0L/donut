@@ -14,14 +14,12 @@ import java.util.Arrays;
 public class DonutServer {
     private String name;
     private String id;
-    private boolean hasEmojis;
     private ArrayList<DonutUser> user;
 
 
     public DonutServer(Guild guild){
         this.name = guild.getName();
         this.id = guild.getId();
-        this.hasEmojis = false;
         this.user = new ArrayList<>();
     }
 
@@ -43,14 +41,6 @@ public class DonutServer {
 
     public void resetUser(){
         this.user = new ArrayList<>();
-    }
-
-    public boolean hasEmojis() {
-        return hasEmojis;
-    }
-
-    public void setEmojis(boolean hasEmojis) {
-        this.hasEmojis = hasEmojis;
     }
 
     public void add(DonutUser user){

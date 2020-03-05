@@ -15,4 +15,9 @@ public class HardwareStore extends Location {
         super.closes = 24;
         super.stock = new ArrayList<>();
     }
+
+    @Override
+    public void restock() {
+
+    }
 }

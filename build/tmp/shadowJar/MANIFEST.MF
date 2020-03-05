@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Class-Path: groovy-all-1.0-2.5.4.jar gradle-api-5.2.1.jar gradle-insta
+ llation-beacon-5.2.1.jar
+Main-Class: com.pl.discord.Main
+

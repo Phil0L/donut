@@ -35,13 +35,6 @@ public class Main {
 
     public static void main(String[] args) throws LoginException {
         new Main();
-        SpotifyApi spotifyApi = new SpotifyApi.Builder()
-// Tokens:
-// Access Token: BQBoex12w6u3H5WNcupbD3KIFkKtyiRLwRj5Gb8iY7rZMr1sYKsH6ll-xZyzx6D9fXHr6w3-34whWxnHr0sLqMgXjihpWlplGEMPhc55VGvadxFlxPKj4o5eQ2l_VOBrSo9XO_G7_GuVxsDDg1ARR0r4jYFeK0Y
-// Refresh Token: AQBacLlvwGXFEnOGIrmYwEHxvFU-UdKExkkZsYsu5bcQvLfwB2hbrf3SHDxIsXhrJ3USQ-o0CPhQRZBkHVdYUF8mKdda3MWCWTk-tOEYpdfwYI09vtumTLhlSPyhlZkyZFE
-                .setAccessToken("BQBoex12w6u3H5WNcupbD3KIFkKtyiRLwRj5Gb8iY7rZMr1sYKsH6ll-xZyzx6D9fXHr6w3-34whWxnHr0sLqMgXjihpWlplGEMPhc55VGvadxFlxPKj4o5eQ2l_VOBrSo9XO_G7_GuVxsDDg1ARR0r4jYFeK0Y")
-                .setRefreshToken("AQBacLlvwGXFEnOGIrmYwEHxvFU-UdKExkkZsYsu5bcQvLfwB2hbrf3SHDxIsXhrJ3USQ-o0CPhQRZBkHVdYUF8mKdda3MWCWTk-tOEYpdfwYI09vtumTLhlSPyhlZkyZFE")
-                .build();
 
     }
 
@@ -60,12 +53,10 @@ public class Main {
         cmd.setOwnerId("653675331328409618");
         cmd.setHelpWord("help");
         cmd.setActivity(Activity.of(Activity.ActivityType.DEFAULT, "%help | online"));
-        cmd.addCommand(new Hund());
+
         cmd.addCommand(new Clear());
-        cmd.addCommand(new FlipACoin());
-        cmd.addCommand(new Fuck());
         cmd.addCommand(new Ping());
-        cmd.addCommand(new Snickers());
+        cmd.addCommand(new Stop());
 
         cmd.addCommand(new Join());
         cmd.addCommand(new Disconnect());
@@ -76,8 +67,7 @@ public class Main {
         cmd.addCommand(new Pause());
         cmd.addCommand(new Skip());
         cmd.addCommand(new Song());
-
-        cmd.addCommand(new Stop());
+        cmd.addCommand(new Spotify());
 
         cmd.addCommand(new Enter());
         cmd.addCommand(new Mine());
@@ -86,6 +76,11 @@ public class Main {
         cmd.addCommand(new Serverinfo());
         cmd.addCommand(new UserInfo());
         cmd.addCommand(new LocationCommand());
+
+        cmd.addCommand(new Hund());
+        cmd.addCommand(new FlipACoin());
+        cmd.addCommand(new Fuck());
+        cmd.addCommand(new Snickers());
 
         cmd.addCommand(new Coins());
         cmd.addCommand(new Donuts());

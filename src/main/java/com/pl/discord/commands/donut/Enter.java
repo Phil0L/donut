@@ -68,9 +68,6 @@ public class Enter extends Command {
                         i++;
                     } else k++;
                     event.reply(new EmbedBuilder().setColor(Color.GREEN).setTitle(i + " Emojis created," + (7 - (k + i)) + " missing").build());
-                    int j = Main.getServer(event.getGuild());
-                    if (k + i == 7)
-                        Main.server.get(j).setEmojis(true);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -86,7 +83,7 @@ public class Enter extends Command {
                 Main.server.get(i).add(new DonutUser(event.getMember()));
                 Main.server.get(i).save(event.getGuild());
                 event.getGuild().addRoleToMember(event.getMember(), event.getGuild().getRolesByName("DonutMember", true).get(0)).queue();
-                event.getTextChannel().sendMessage("Welcome" + event.getMember().getEffectiveName()).addFile(new File("./data/media/Banner.png")).queue();
+                event.getTextChannel().sendMessage("Welcome " + event.getMember().getEffectiveName()).addFile(new File("./data/media/Banner.png")).queue();
 
             } else {
                 eb.setColor(Color.RED);
@@ -99,13 +96,13 @@ public class Enter extends Command {
             Main.server.get(i).add(new DonutUser(member));
             Main.server.get(i).save(event.getGuild());
             event.getGuild().addRoleToMember(member, event.getGuild().getRolesByName("DonutMember", true).get(0)).queue();
-            event.getTextChannel().sendMessage("Welcome" + member.getEffectiveName()).addFile(new File("./data/media/Banner.png")).queue();
+            event.getTextChannel().sendMessage("Welcome " + member.getEffectiveName()).addFile(new File("./data/media/Banner.png")).queue();
 
         } else if (event.getArgs().equals("force")) {
             Main.server.get(i).add(new DonutUser(event.getMember()));
             Main.server.get(i).save(event.getGuild());
             event.getGuild().addRoleToMember(event.getMember(), event.getGuild().getRolesByName("DonutMember", true).get(0)).queue();
-            event.getTextChannel().sendMessage("Welcome" + event.getMember().getEffectiveName()).addFile(new File("./data/media/Banner.png")).queue();
+            event.getTextChannel().sendMessage("Welcome " + event.getMember().getEffectiveName()).addFile(new File("./data/media/Banner.png")).queue();
 
         } else {
             Member member = event.getMessage().getMentionedMembers().get(0);
@@ -113,7 +110,7 @@ public class Enter extends Command {
                 Main.server.get(i).add(new DonutUser(member));
                 Main.server.get(i).save(event.getGuild());
                 event.getGuild().addRoleToMember(member, event.getGuild().getRolesByName("DonutMember", true).get(0)).queue();
-                event.getTextChannel().sendMessage("Welcome" + member.getEffectiveName()).addFile(new File("./data/media/Banner.png")).queue();
+                event.getTextChannel().sendMessage("Welcome " + member.getEffectiveName()).addFile(new File("./data/media/Banner.png")).queue();
 
             } else {
                 eb.setColor(Color.RED);
