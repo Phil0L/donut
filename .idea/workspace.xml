@@ -2,53 +2,119 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c0a9cbf1-dbe3-41b1-8d8b-002e8ee36508" name="Default Changelist" comment="Update">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/Shuffle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/Spotify.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/donut/Buy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/donut/Gamble.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/donut/Item.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/util/Backup.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/util/Help.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/util/Patreon.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/util/Settings.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/util/Status.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/util/Welcome.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/JoinMe.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/Queue.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/Soundboard.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/ServerSettings.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/SpotifyMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/items/Clothing.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/items/Gambable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/items/Item.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/locations/Location.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/DonutServer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/DonutUser.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/dev/Coins.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/dev/Coins.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/dev/Donuts.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/dev/Donuts.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/donut/Buy.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/dev/Coins.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/dev/Donuts.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/donut/Enter.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/donut/Enter.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/donut/Load.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/donut/Load.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/donut/LocationCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/donut/LocationCommand.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/donut/Mine.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/donut/Mine.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/donut/Serverinfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/donut/Serverinfo.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/donut/UserInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/donut/UserInfo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/simple/Clear.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/simple/Clear.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/simple/FlipACoin.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/simple/Fuck.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/simple/Hund.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/donut/Welcome.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/fun/FlipACoin.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/fun/FlipACoin.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/fun/Fuck.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/fun/Fuck.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/fun/Hund.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/fun/Hund.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/fun/Snickers.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/fun/Snickers.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/simple/Clear.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/simple/Ping.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/simple/Stop.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/Disconnect.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/Disconnect.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/Join.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/Join.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/Pause.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/Pause.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/Play.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/Play.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/Shuffle.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/Shuffle.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/Skip.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/Skip.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/Song.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/Song.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/Spotify.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/Spotify.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/Volume.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/Volume.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/handler/PlayerManager$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/handler/PlayerManager$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/handler/PlayerManager$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/handler/PlayerManager$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/handler/PlayerManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/handler/PlayerManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/handler/TrackScheduler.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/music/handler/TrackScheduler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/sound/Clip.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/sound/Clip.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/sound/Stop.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/sound/Record.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/commands/voice/sound/Record.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/listener/Listener.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/listener/Listener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/Donut_Kingdom/439688073442492426.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/Donut_Kingdom/439688073442492426.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/objects/DonutServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/objects/DonutServer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/objects/DonutUser.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/objects/DonutUser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/objects/Item.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/objects/Location.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/objects/items/Donut.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/objects/locations/Bakery.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/objects/locations/Bakery.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/objects/locations/Casino.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/objects/locations/Casino.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/objects/locations/ClothingStore.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/objects/locations/ClothingStore.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/objects/locations/GasStation.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/objects/locations/GasStation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/objects/locations/HardwareStore.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/objects/locations/HardwareStore.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/objects/locations/Supermarket.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/pl/discord/objects/locations/Supermarket.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/libs/donut-0.1-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/build/libs/donut-0.1-all.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/Donut_Kingdom/439688073442492426.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/Ozeon/297780212408516611.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/media/Banner.png" beforeDir="false" afterPath="$PROJECT_DIR$/data/media/Banner.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/dev/Coins.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/dev/Donuts.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/donut/Enter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/donut/Enter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/donut/Load.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/donut/Load.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/donut/LocationCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/donut/LocationCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/donut/Mine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/donut/Mine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/donut/Serverinfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/donut/Serverinfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/donut/UserInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/donut/UserInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/donut/Welcome.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/fun/FlipACoin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/fun/FlipACoin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/fun/Fuck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/fun/Fuck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/fun/Hund.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/fun/Hund.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/fun/Snickers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/fun/Snickers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/simple/Clear.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/util/Clear.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/simple/Ping.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/util/Ping.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/simple/Stop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/util/Stop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/Disconnect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/Disconnect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/Join.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/Join.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/Pause.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/Pause.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/Play.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/Play.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/Shuffle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/Shuffle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/Skip.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/Skip.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/Song.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/Song.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/Spotify.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/Spotify.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/Volume.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/Volume.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/handler/PlayerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/handler/PlayerManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/handler/TrackScheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/music/handler/TrackScheduler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/sound/Clip.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/sound/Clip.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/sound/Record.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/commands/voice/sound/Record.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/listener/Listener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/listener/Listener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/DonutServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/DonutServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/Item.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/Location.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/items/Donut.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/items/Donut.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/DonutUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/DonutUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/Item.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/Location.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/items/Donut.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/locations/Bakery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/locations/Bakery.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/locations/Casino.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/locations/Casino.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/locations/ClothingStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pl/discord/objects/locations/ClothingStore.java" afterDir="false" />
@@ -150,13 +216,13 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/src/main/java/com" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/gdata-java-client-master" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2045977" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="preferences.editor" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
@@ -176,7 +242,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.DonutBot [shadowJar]">
+  <component name="RunManager" selected="Application.Donut">
     <configuration name="Donut" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.pl.discord.Main" />
       <module name="donut.main" />
@@ -300,7 +366,33 @@
       <workItem from="1583245223364" duration="30710000" />
       <workItem from="1583328924936" duration="23579000" />
       <workItem from="1583392588138" duration="15488000" />
-      <workItem from="1583408732004" duration="3055000" />
+      <workItem from="1583408732004" duration="19525000" />
+      <workItem from="1583499125439" duration="13822000" />
+      <workItem from="1583607556524" duration="422000" />
+      <workItem from="1583683861352" duration="16776000" />
+      <workItem from="1583772274099" duration="2032000" />
+      <workItem from="1583820064691" duration="24080000" />
+      <workItem from="1583948631204" duration="11723000" />
+      <workItem from="1584022946155" duration="274000" />
+      <workItem from="1584257885653" duration="11474000" />
+      <workItem from="1584728713508" duration="313000" />
+      <workItem from="1584729432115" duration="86000" />
+      <workItem from="1585007999694" duration="2140000" />
+      <workItem from="1585052490298" duration="19085000" />
+      <workItem from="1585139703144" duration="15901000" />
+      <workItem from="1585230957220" duration="10955000" />
+      <workItem from="1585310978914" duration="5645000" />
+      <workItem from="1585325755030" duration="6494000" />
+      <workItem from="1585398064210" duration="20000000" />
+      <workItem from="1585488826250" duration="21416000" />
+      <workItem from="1585580754100" duration="487000" />
+      <workItem from="1585662386606" duration="5860000" />
+      <workItem from="1585744810741" duration="10256000" />
+      <workItem from="1585850755371" duration="614000" />
+      <workItem from="1585931871950" duration="3009000" />
+      <workItem from="1586265577671" duration="5529000" />
+      <workItem from="1586348218111" duration="11361000" />
+      <workItem from="1586439434425" duration="558000" />
     </task>
     <task id="LOCAL-00001" summary="Update">
       <created>1583341426336</created>

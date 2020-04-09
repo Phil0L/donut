@@ -1,11 +1,13 @@
 package com.pl.discord.commands.voice.music.handler;
 
+import com.pl.discord.commands.voice.music.Soundboard;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -14,17 +16,18 @@ import java.util.concurrent.LinkedBlockingQueue;
  * This class schedules tracks for the audio player. It contains the queue of tracks.
  */
 public class TrackScheduler extends AudioEventAdapter {
-    private final AudioPlayer player;
-    private BlockingQueue<AudioTrack> queue;
-    private final ArrayList<AudioTrack> listQueue;
+    private AudioPlayer player;
+    //private BlockingQueue<AudioTrack> queue;
+    public ArrayList<AudioTrack> queue;
+    public AudioTrack lastPlayed;
 
     /**
      * @param player The audio player this scheduler uses
      */
     public TrackScheduler(AudioPlayer player) {
         this.player = player;
-        this.queue = new LinkedBlockingQueue<>();
-        this.listQueue = new ArrayList<>();
+        this.queue = new ArrayList<>();
+
     }
 
     /**
@@ -37,9 +40,18 @@ public class TrackScheduler extends AudioEventAdapter {
         // something is playing, it returns false and does nothing. In that case the player was already playing so this
         // track goes to the queue instead.
         if (!player.startTrack(track, true)) {
-            queue.offer(track);
-            listQueue.add(track);
+            queue.add(track);
         }
+        if (player.getPlayingTrack() != null)
+            lastPlayed = player.getPlayingTrack();
+    }
+
+    public void queueFront(AudioTrack track) {
+        if (!player.startTrack(track, true)) {
+            queue.add(0, track);
+        }
+        if (player.getPlayingTrack() != null)
+            lastPlayed = player.getPlayingTrack();
     }
 
     /**
@@ -48,18 +60,36 @@ public class TrackScheduler extends AudioEventAdapter {
     public void nextTrack() {
         // Start the next track, regardless of if something is already playing or not. In case queue was empty, we are
         // giving null to startTrack, which is a valid argument and will simply stop the player.
-        player.startTrack(queue.poll(), false);
-        listQueue.remove(listQueue.size() - 1);
+        if (queue.isEmpty())
+            player.startTrack(null, false);
+        else {
+            AudioTrack track = queue.get(0);
+            player.startTrack(track, false);
+            if (Soundboard.position != 0) {
+                player.getPlayingTrack().setPosition(Soundboard.position);
+                Soundboard.position = 0;
+            }
+            if (!Soundboard.wasActive) {
+                player.setPaused(true);
+            }
+            queue.remove(0);
+        }
+
+        if (player.getPlayingTrack() != null)
+            lastPlayed = player.getPlayingTrack();
     }
 
-    public void shuffle(){
-        Collections.shuffle(listQueue);
-        BlockingQueue<AudioTrack> queue = new LinkedBlockingQueue<>();
+    public void shuffle() {
+        Collections.shuffle(queue);
+    }
 
-        for (AudioTrack track : listQueue){
-            queue.offer(track);
-        }
-        this.queue = queue;
+    public ArrayList<AudioTrack> getList() {
+        return queue;
+    }
+
+
+    public void playNow(AudioTrack track) {
+        this.player.startTrack(track, false);
     }
 
     @Override

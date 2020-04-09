@@ -1,8 +1,5 @@
 package com.pl.discord.objects.locations;
 
-import com.pl.discord.objects.Location;
-import com.pl.discord.objects.items.Donut;
-
 import java.util.ArrayList;
 
 public class HardwareStore extends Location {

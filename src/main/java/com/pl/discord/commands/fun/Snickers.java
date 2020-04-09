@@ -2,6 +2,7 @@ package com.pl.discord.commands.fun;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.pl.discord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.util.ArrayList;
@@ -12,12 +13,15 @@ public class Snickers extends Command {
         super.name = "snickers";
         super.aliases = new String[]{"snikers","isseinsnickers","iss-ein-snickers"};
         super.category = new Category("Fun");
-        super.arguments = "[user]";
-        super.help = "du wirst zur Diva wenn du hungrig bist";
+        super.arguments = "";
+        super.help = "%snickers : sends a random snickers gif\n" +
+                "This is an insider pls dont be confused";
     }
 
     @Override
     protected void execute(CommandEvent event) {
+        Main.log(event, "Snickers");
+
         ArrayList<String> sample = new ArrayList<>();
         sample.add("https://media.giphy.com/media/fsoHbBoAF38hI2qcpc/giphy.gif");
         sample.add("https://media.giphy.com/media/xXjIVvfvkvqZG/giphy.gif");

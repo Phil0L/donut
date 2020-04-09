@@ -1,27 +1,27 @@
 package com.pl.discord.commands.voice.music;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.pl.discord.objects.SpotifyMessage;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.enums.ModelObjectType;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
+import com.wrapper.spotify.exceptions.detailed.NotFoundException;
 import com.wrapper.spotify.model_objects.credentials.AuthorizationCodeCredentials;
 import com.wrapper.spotify.model_objects.specification.PlaylistSimplified;
 import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
+import com.wrapper.spotify.model_objects.specification.Track;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRefreshRequest;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
-import javax.swing.plaf.IconUIResource;
 import java.awt.*;
 import java.io.IOException;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
+import java.util.ArrayList;
 
-public class Spotify extends Command {
+public class Spotify {
+
+    public static ArrayList<SpotifyMessage> spotifyMessages = new ArrayList<>();
 
 //     Tokens:
 //     Access Token: BQBoex12w6u3H5WNcupbD3KIFkKtyiRLwRj5Gb8iY7rZMr1sYKsH6ll-xZyzx6D9fXHr6w3-34whWxnHr0sLqMgXjihpWlplGEMPhc55VGvadxFlxPKj4o5eQ2l_VOBrSo9XO_G7_GuVxsDDg1ARR0r4jYFeK0Y
@@ -30,79 +30,154 @@ public class Spotify extends Command {
 //     Client Secret: a15fff057b6545c78e5eb3064e2628ba
 
     public Spotify() {
-        super.name = "spotify";
-        super.aliases = new String[]{};
-        super.category = new Category("Sound");
-        super.arguments = "[playlist]";
-        super.help = "looks for a spotify playlist and plays these songs via Youtube";
-
-
+        spotifyMessages = new ArrayList<>();
     }
 
-    @Override
-    protected void execute(CommandEvent event) {
+
+    static void searchSpotify(@NotNull CommandEvent event, @NotNull String search){
         authorizationCodeRefresh_Sync();
 
-        playlists = getPlaylists(event.getArgs());
+        Message message = event.getTextChannel().sendMessage(new EmbedBuilder().setTitle("Waiting for Spotify").build()).complete();
 
-        if (playlists != null) {
-            current = 0;
-            message = event.getTextChannel().sendMessage(new EmbedBuilder().setTitle("Waiting for spotify").build()).complete();
-            messageID = message.getIdLong();
-
-
-            showPlaylist(message, playlists, current);
-            new Thread(() -> {
-                try {
-                    Thread.sleep(30000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            }).start();
+        String[] args = search.split(" ");
+        if (args[0].equals("playlist") || args[0].equals("pl") || args[0].equals("list")) {
+            SpotifyMessage spotifyMessage = new SpotifyMessage(
+                    message,
+                    getPlaylists(search.replaceAll("playlist ", "").replaceAll("pl ", "").replaceAll("list ", "")),
+                    0,
+                    event.getGuild());
+            spotifyMessages.add(spotifyMessage);
+            int i = spotifyMessages.size() -1;
+            if (spotifyMessages.get(i).playlists.length != 0) {
+                showPlaylist(spotifyMessages.get(i).message, spotifyMessages.get(i).playlists, spotifyMessages.get(i).current);
+            }else{
+                showNoResults(spotifyMessages.get(i).message, spotifyMessage);
+            }
         }
-
-
+        if (args[0].equals("user") || args[0].equals("account")) {
+            SpotifyMessage spotifyMessage;
+            try {
+                spotifyMessage = new SpotifyMessage(
+                        message,
+                        getUserPlaylists(search.replaceAll("user ", "").replaceAll("account ", "")),
+                        0,
+                        event.getGuild());
+                spotifyMessages.add(spotifyMessage);
+            } catch (NotFoundException e) {
+                message.editMessage(new EmbedBuilder().setColor(Color.RED).setTitle("No user found").build()).queue();
+                spotifyMessage = new SpotifyMessage();
+            }
+            int i = spotifyMessages.size() -1;
+            if (spotifyMessages.get(i).playlists.length != 0) {
+                showPlaylist(spotifyMessages.get(i).message, spotifyMessages.get(i).playlists, spotifyMessages.get(i).current);
+            }else {
+                showNoResults(spotifyMessages.get(i).message, spotifyMessage);
+            }
+        }
+        if (args[0].equals("track") || args[0].equals("song")) {
+            SpotifyMessage spotifyMessage = new SpotifyMessage(
+                    message,
+                    getTracks(search.replaceAll("track ", "").replaceAll("song ", "")),
+                    0,
+                    event.getGuild());
+            spotifyMessages.add(spotifyMessage);
+            int i = spotifyMessages.size() -1;
+            if (spotifyMessages.get(i).tracks.length != 0) {
+                showTracks(spotifyMessages.get(i).message, spotifyMessages.get(i).tracks, spotifyMessages.get(i).current);
+            }else {
+                showNoResults(spotifyMessages.get(i).message, spotifyMessage);
+            }
+        }
+        if (!args[0].equals("playlist") && !args[0].equals("pl") && !args[0].equals("list") && !args[0].equals("user") && !args[0].equals("account") && !args[0].equals("track") && !args[0].equals("song")){
+            message.editMessage(new EmbedBuilder().setTitle("You have to provide the type of what you want to search. [Types: playlist/track/user] like this: %spotify [type] [searchkeyword]").setColor(Color.RED).build()).queue();
+        }
     }
-
-    public static Message message;
-    public static PlaylistSimplified[] playlists;
-    public static long messageID;
-    public static int current;
 
 
     public static void showPlaylist(Message message, PlaylistSimplified[] playlists, int which) {
 
+        if (playlists.length == 0){
+            message.editMessage(new EmbedBuilder().setTitle("No playlist found").setColor(Color.RED).build()).queue();
+        }else {
+
+
+            message.clearReactions().queue();
+
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.setAuthor(playlists[which].getOwner().getDisplayName());
+            eb.setTitle(playlists[which].getName());
+            eb.setColor(new Color(30, 215, 96));
+            if (playlists[which].getImages().length != 0)
+                eb.setThumbnail(playlists[which].getImages()[0].getUrl());
+
+            eb.setDescription("**Tracks:**\n" +
+                    ((getPlaylistsTracks(playlists[which].getId()).length > 0) ? getPlaylistsTracks(playlists[which].getId())[0].getTrack().getArtists()[0].getName() + " - " + getPlaylistsTracks(playlists[which].getId())[0].getTrack().getName() + "\n" : "") +
+                    ((getPlaylistsTracks(playlists[which].getId()).length > 1) ? getPlaylistsTracks(playlists[which].getId())[1].getTrack().getArtists()[0].getName() + " - " + getPlaylistsTracks(playlists[which].getId())[1].getTrack().getName() + "\n" : "") +
+                    ((getPlaylistsTracks(playlists[which].getId()).length > 2) ? getPlaylistsTracks(playlists[which].getId())[2].getTrack().getArtists()[0].getName() + " - " + getPlaylistsTracks(playlists[which].getId())[2].getTrack().getName() + "\n" : "") +
+                    ((getPlaylistsTracks(playlists[which].getId()).length > 3) ? "..." : "")
+
+            );
+
+            message.editMessage(eb.build()).queue();
+            if (which != 0)
+                message.addReaction("U+2B05").queue(); // left
+            message.addReaction("U+1F3B5").queue(); // play
+            message.addReaction("U+2795").queue(); // queue
+
+            if (which != playlists.length)
+                message.addReaction("U+27A1").queue(); // right
+        }
+    }
+
+    public static void showTracks(Message message, Track[] tracks, int which){
         message.clearReactions().queue();
 
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setAuthor(playlists[which].getOwner().getDisplayName());
-        eb.setTitle(playlists[which].getName());
+        eb.setAuthor(tracks[which].getArtists()[0].getName());
+        eb.setTitle(tracks[which].getName());
         eb.setColor(new Color(30, 215, 96));
-        eb.setThumbnail(playlists[which].getImages()[0].getUrl());
-
-        eb.setDescription("**Tracks:**\n" +
-                ((getPlaylistsTracks(playlists[which].getId()).length > 0) ? getPlaylistsTracks(playlists[which].getId())[0].getTrack().getArtists()[0].getName() + " - " + getPlaylistsTracks(playlists[which].getId())[0].getTrack().getName() + "\n" : "") +
-                ((getPlaylistsTracks(playlists[which].getId()).length > 1) ? getPlaylistsTracks(playlists[which].getId())[1].getTrack().getArtists()[0].getName() + " - " + getPlaylistsTracks(playlists[which].getId())[1].getTrack().getName() + "\n" : "") +
-                ((getPlaylistsTracks(playlists[which].getId()).length > 2) ? getPlaylistsTracks(playlists[which].getId())[2].getTrack().getArtists()[0].getName() + " - " + getPlaylistsTracks(playlists[which].getId())[2].getTrack().getName() + "\n" : "") +
-                ((getPlaylistsTracks(playlists[which].getId()).length > 3) ? "..." : "")
-
-        );
+        eb.setThumbnail(tracks[which].getAlbum().getImages()[0].getUrl());
 
         message.editMessage(eb.build()).queue();
         if (which != 0)
             message.addReaction("U+2B05").queue(); // left
         message.addReaction("U+1F3B5").queue(); // play
-        if (which != playlists.length)
+        message.addReaction("U+2795").queue(); // queue
+        if (which != tracks.length -1)
             message.addReaction("U+27A1").queue(); // right
+
     }
 
-    private PlaylistSimplified[] getPlaylists(String name) {
+    public static void showNoResults(Message message, SpotifyMessage spotifyMessage){
+        message.clearReactions().queue();
+
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setTitle("No Results found");
+        eb.setColor(Color.RED);
+
+        message.editMessage(eb.build()).queue();
+
+        spotifyMessages.remove(spotifyMessage);
+
+    }
+
+    private static PlaylistSimplified[] getPlaylists(String name) {
         try {
             return spotifyApi.searchItem(name, ModelObjectType.PLAYLIST.getType())
                     .build().execute()
                     .getPlaylists().getItems();
 
+        } catch (IOException | SpotifyWebApiException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static Track[] getTracks(String name){
+        try {
+            return spotifyApi.searchItem(name, ModelObjectType.TRACK.getType())
+                    .build().execute()
+                    .getTracks().getItems();
         } catch (IOException | SpotifyWebApiException e) {
             e.printStackTrace();
         }
@@ -120,18 +195,22 @@ public class Spotify extends Command {
         return null;
     }
 
+    private static PlaylistSimplified[] getUserPlaylists(String id) throws NotFoundException{
+        try {
+            return spotifyApi.getListOfUsersPlaylists(id).build().execute().getItems();
+
+        } catch (IOException | SpotifyWebApiException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     private static final String clientId = "fe905aafc8544b3a99e185621deb5c08";
     private static final String clientSecret = "a15fff057b6545c78e5eb3064e2628ba";
     private static final String refreshToken = "AQBacLlvwGXFEnOGIrmYwEHxvFU-UdKExkkZsYsu5bcQvLfwB2hbrf3SHDxIsXhrJ3USQ-o0CPhQRZBkHVdYUF8mKdda3MWCWTk-tOEYpdfwYI09vtumTLhlSPyhlZkyZFE";
-
-    private static final SpotifyApi spotifyApi = new SpotifyApi.Builder()
-            .setClientId(clientId)
-            .setClientSecret(clientSecret)
-            .setRefreshToken(refreshToken)
-            .build();
-    private static final AuthorizationCodeRefreshRequest authorizationCodeRefreshRequest = spotifyApi.authorizationCodeRefresh()
-            .build();
+    private static final SpotifyApi spotifyApi = new SpotifyApi.Builder().setClientId(clientId).setClientSecret(clientSecret).setRefreshToken(refreshToken).build();
+    private static final AuthorizationCodeRefreshRequest authorizationCodeRefreshRequest = spotifyApi.authorizationCodeRefresh().build();
 
     public static void authorizationCodeRefresh_Sync() {
         try {
@@ -146,24 +225,14 @@ public class Spotify extends Command {
         }
     }
 
-    public static void authorizationCodeRefresh_Async() {
-        try {
-            final CompletableFuture<AuthorizationCodeCredentials> authorizationCodeCredentialsFuture = authorizationCodeRefreshRequest.executeAsync();
-
-            // Thread free to do other tasks...
-
-            // Example Only. Never block in production code.
-            final AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeCredentialsFuture.join();
-
-            // Set access token for further "spotifyApi" object usage
-            spotifyApi.setAccessToken(authorizationCodeCredentials.getAccessToken());
-
-        } catch (CompletionException e) {
-            System.out.println("Error: " + e.getCause().getMessage());
-        } catch (CancellationException e) {
-            System.out.println("Async operation cancelled.");
+    public static int getSpotifyMessageById(long id){
+        for (int i = 0; i < spotifyMessages.size(); i++){
+            if (spotifyMessages.get(i).messageID == id)
+                return i;
         }
+        return 0;
     }
+
 }
 
 

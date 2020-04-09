@@ -2,6 +2,8 @@ package com.pl.discord.commands.voice;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.pl.discord.Main;
+import com.pl.discord.commands.voice.music.handler.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.awt.*;
@@ -14,12 +16,16 @@ public class Disconnect extends Command {
         super.aliases = new String[]{"dc","fuckoff","leave"};
         super.category = new Category("Sound");
         super.arguments = "";
-        super.help = "disconnects the Bot";
+        super.help = "disconnects the Bot from his voicechannel";
     }
 
     @Override
     protected void execute(CommandEvent event) {
+        Main.log(event, "Disconnect");
+
         stopRec(event);
+        PlayerManager manager = PlayerManager.getInstance();
+        manager.getGuildMusicManager(event.getGuild()).player.destroy();
         event.getGuild().getAudioManager().closeAudioConnection();
         event.reply(new EmbedBuilder().setColor(Color.ORANGE).setTitle("Disconnected").build());
     }

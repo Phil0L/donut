@@ -1,11 +1,9 @@
-package com.pl.discord.commands.simple;
+package com.pl.discord.commands.util;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.pl.discord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.awt.*;
@@ -28,13 +26,16 @@ public class Ping extends Command {
         super.aliases = new String[]{};
         super.category = new Category("Utilities");
         super.arguments = "";
-        super.help = "checks the ping";
-        activeThreads = 1;
+        super.help = "%ping : tries to calculate the current latency of the bot";
+        activeThreads = 0;
         time = new ArrayList<>();
     }
 
     @Override
     protected void execute(CommandEvent event) {
+        Main.log(event, "Ping");
+
+        activeThreads += Main.manager.getGuilds().size();
         time = new ArrayList<>();
         one = "";
         two = "";
@@ -81,11 +82,11 @@ public class Ping extends Command {
         }
     }
 
-    public static void getTime(int tri){
+    public static void getTime(int tri) {
 
         Calendar cal = Calendar.getInstance();
         String[] now = new String[]{};
-        switch (tri){
+        switch (tri) {
             case 1:
                 now = Ping.one.split(":");
                 break;
@@ -140,31 +141,30 @@ public class Ping extends Command {
 
         int years = cal.get(Calendar.YEAR) - Integer.parseInt(now[6]);
 
-        Ping.time.add(msec + sec*100 + min*6000 + hour*360000 + day*8640000);
+        Ping.time.add(msec + sec * 100 + min * 6000 + hour * 360000 + day * 8640000);
 
     }
 
-    public static void sendMessage(TextChannel channel){
+    public static void sendMessage(TextChannel channel) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Color.ORANGE);
         eb.setAuthor("Pingtest complete");
-        eb.addField("Time to calculate",((time.get(0) + time.get(1) + time.get(2)) / 3) + " ms", false);
+        eb.addField("Time to calculate", ((time.get(0) + time.get(1) + time.get(2)) / 3) + " ms", false);
         eb.addField("Time to notify", String.valueOf(channel.getJDA().getGatewayPing()), false);
-        if (activeThreads == 1)
-            eb.addField("Threads", "1 (main)", false);
-        else
-            eb.addField("Threads", String.valueOf(activeThreads), false);
+        eb.addField("Threads", String.valueOf(activeThreads), false);
         channel.sendMessage(eb.build()).queue();
         channel.deleteMessageById(id1).queue();
         channel.deleteMessageById(id2).queue();
         channel.deleteMessageById(id3).queue();
+        activeThreads -= Main.manager.getGuilds().size();
 
     }
 
-    public static void addThread(){
+    public static void addThread() {
         activeThreads++;
     }
-    public static void removeThread(){
+
+    public static void removeThread() {
         activeThreads--;
     }
 

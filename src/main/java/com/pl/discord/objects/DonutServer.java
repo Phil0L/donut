@@ -1,8 +1,11 @@
 package com.pl.discord.objects;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.pl.discord.Main;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -15,15 +18,21 @@ public class DonutServer {
     private String name;
     private String id;
     private ArrayList<DonutUser> user;
+    private ServerSettings settings;
+
+    public static int SAVE_USER = 0;
+    public static int SAVE_SETTINGS = 1;
+    public static int SAVE_SOUNDBOARD = 2;
 
 
-    public DonutServer(Guild guild){
+    public DonutServer(Guild guild) {
         this.name = guild.getName();
         this.id = guild.getId();
         this.user = new ArrayList<>();
+        this.settings = new ServerSettings(guild);
     }
 
-    public void addUser(Member member){
+    public void addUser(Member member) {
         user.add(new DonutUser(member));
     }
 
@@ -39,39 +48,149 @@ public class DonutServer {
         return user;
     }
 
-    public void resetUser(){
+    public void resetUser() {
         this.user = new ArrayList<>();
     }
 
-    public void add(DonutUser user){
+    public void add(DonutUser user) {
         this.user.add(user);
     }
 
-    public void save(Guild guild) {
-        JSONArray ja = new JSONArray();
-        for (DonutUser donutUser : this.user) {
-            JSONObject jo = new JSONObject(donutUser);
-            ja.put(jo);
-        }
-        try {
-            File file2 = new File("./data/" + guild.getName().replace(' ', '_'));
-            File file3 = new File("./data/" + guild.getName().replace(' ', '_') + "/" + guild.getId() + ".json");
-            FileWriter file;
-            if (file3.exists()) {
-                file = new FileWriter("./data/" + guild.getName().replace(' ', '_') + "/" + guild.getId() + ".json");
-            } else if (file2.exists()){
-                file = new FileWriter("./data/" + guild.getName().replace(' ', '_') + "/" + guild.getId() + ".json");
-            }else{
-                file2.mkdir();
-                file = new FileWriter("./data/" + guild.getName().replace(' ', '_') + "/" + guild.getId() + ".json");
-            }
+    public void save() {
+        File file = new File("./data/" + getId());
+        if (file.mkdir())
+            System.out.println("[" + getName() + "]: " + Main.ANSI_PURPLE + "Created data folder" + Main.ANSI_RESET);
 
-            file.write(ja.toString());
-            file.flush();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+        String data = "";
+        FileWriter fileWriter;
+
+        if (!getUser().isEmpty()) {
+            file = new File("./data/" + getId() + "/user");
+            if (file.mkdir())
+                System.out.println("[" + getName() + "]: " + Main.ANSI_PURPLE + "Created user folder" + Main.ANSI_RESET);
+
+            for (DonutUser user : getUser()) {
+                try {
+
+                    file = new File("./data/" + getId() + "/user/" + user.getId() + ".json");
+                    data = mapper.writeValueAsString(user);
+                    fileWriter = new FileWriter(file);
+                    fileWriter.write(data);
+                    fileWriter.flush();
+                    System.out.println("[" + getName() + "]: " + Main.ANSI_GREEN + "Saved " + user.getName() + Main.ANSI_RESET);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        try {
+            file = new File("./data/" + getId() + "/settings.json");
+            fileWriter = new FileWriter(file);
+            data = mapper.writeValueAsString(settings);
+            fileWriter.write(data);
+            fileWriter.flush();
+            System.out.println("[" + getName() + "]: " + Main.ANSI_GREEN + "Saved settings" + Main.ANSI_RESET);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void save(DonutUser user) {
+        File file = new File("./data/" + getId());
+        if (file.mkdir())
+            System.out.println("[" + getName() + "]: " + Main.ANSI_PURPLE + "Created data folder" + Main.ANSI_RESET);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+        String data = "";
+        FileWriter fileWriter;
+
+        if (!getUser().isEmpty()) {
+            file = new File("./data/" + getId() + "/user");
+            if (file.mkdir())
+                System.out.println("[" + getName() + "]: " + Main.ANSI_PURPLE + "Created user folder" + Main.ANSI_RESET);
+
+            try {
+
+                file = new File("./data/" + getId() + "/user/" + user.getId() + ".json");
+                data = mapper.writeValueAsString(user);
+                fileWriter = new FileWriter(file);
+                fileWriter.write(data);
+                fileWriter.flush();
+                System.out.println("[" + getName() + "]: " + Main.ANSI_GREEN + "Saved " + user.getName() + Main.ANSI_RESET);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public void save(int what) {
+        switch (what){
+            case 0: //USER
+                File file = new File("./data/" + getId());
+                if (file.mkdir())
+                    System.out.println("[" + getName() + "]: " + Main.ANSI_PURPLE + "Created data folder" + Main.ANSI_RESET);
+
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+                String data = "";
+                FileWriter fileWriter;
+
+                if (!getUser().isEmpty()) {
+                    file = new File("./data/" + getId() + "/user");
+                    if (file.mkdir())
+                        System.out.println("[" + getName() + "]: " + Main.ANSI_PURPLE + "Created user folder" + Main.ANSI_RESET);
+
+                    for (DonutUser user : getUser()) {
+                        try {
+
+                            file = new File("./data/" + getId() + "/user/" + user.getId() + ".json");
+                            data = mapper.writeValueAsString(user);
+                            fileWriter = new FileWriter(file);
+                            fileWriter.write(data);
+                            fileWriter.flush();
+                            System.out.println("[" + getName() + "]: " + Main.ANSI_GREEN + "Saved " + user.getName() + Main.ANSI_RESET);
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                break;
+
+            case 1: //SETTINGS
+                file = new File("./data/" + getId());
+                if (file.mkdir())
+                    System.out.println("[" + getName() + "]: " + Main.ANSI_PURPLE + "Created data folder" + Main.ANSI_RESET);
+
+                mapper = new ObjectMapper();
+                mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+                data = "";
+
+                try {
+                    file = new File("./data/" + getId() + "/settings.json");
+                    fileWriter = new FileWriter(file);
+                    data = mapper.writeValueAsString(settings);
+                    fileWriter.write(data);
+                    fileWriter.flush();
+                    System.out.println("[" + getName() + "]: " + Main.ANSI_GREEN + "Saved settings" + Main.ANSI_RESET);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            default:
+                break;
+        }
+
     }
 
     public int getMember(Member member) {
@@ -89,8 +208,16 @@ public class DonutServer {
         }
     }
 
+    public ServerSettings settings() {
+        return this.settings;
+    }
+
+    public void setSettings(ServerSettings settings) {
+        this.settings = settings;
+    }
+
     @Override
     public String toString() {
-        return "server:[name=" + this.name + ",id=" + this.id + ",user=" + Arrays.toString(this.user.toArray()) + "]\n";
+        return "server:[name=" + this.name + ",id=" + this.id + ",settings:" + this.settings + ",user=" + Arrays.toString(this.user.toArray()) + "]\n";
     }
 }

@@ -4,46 +4,41 @@ import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.pl.discord.objects.DonutUser;
 import com.pl.discord.Main;
+import com.pl.discord.objects.items.Item;
+import com.pl.discord.objects.items.Clothing;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 
 import java.awt.*;
+import java.time.OffsetDateTime;
 
 public class UserInfo extends Command {
 
     public UserInfo() {
         super.name = "userinfo";
-        super.aliases = new String[]{"info", "ui", "uinfo", "useri", "useringo"};
+        super.aliases = new String[]{"ui", "uinfo", "useri", "useringo"};
         super.category = new Category("Donut");
         super.arguments = "[user]";
-        super.help = "displays the current user stats";
+        super.help = "% userinfo : displays your current stats\n" +
+                "%userinfo @user : displays the users current stats";
     }
 
     @Override
     protected void execute(CommandEvent event) {
+        Main.log(event, "Userinfo");
+
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Color.RED);
-        if (Main.getServer(event.getGuild()) == -1) {
-            eb.setTitle("No one registered yet. Use %enter to register in Donut Kingdom");
+        if (Main.getDonutUser(event.getGuild(), event.getMember()) == null) {
+            eb.setTitle("You are not registered. Use %enter to register in Donut Kingdom");
             event.reply(eb.build());
         } else {
-            int j = Main.getServer(event.getGuild());
             if (event.getArgs().isEmpty()) {
-
-                int i = Main.server.get(j).getMember(event.getMember());
-                if (i != -1) {
-                    showInfo(Main.server.get(j).getUser().get(i), event);
-                } else {
-                    eb.setTitle("You are not registered. Use %enter to register in Donut Kingdom");
-                    event.reply(eb.build());
-                }
-
-
+                showInfo(Main.getDonutUser(event.getGuild(), event.getMember()), event);
             } else {
                 Member member = event.getMessage().getMentionedMembers().get(0);
-                int i = Main.server.get(j).getMember(member);
-                if (i != -1) {
-                    showInfo(Main.server.get(j).getUser().get(i), event);
+                if (Main.getDonutUser(event.getGuild(), member) != null) {
+                    showInfo(Main.getDonutUser(event.getGuild(), member), event);
                 } else {
                     eb.setTitle("This user is not registered. Use %enter [user] to register the user in Donut Kingdom");
                     event.reply(eb.build());
@@ -57,7 +52,22 @@ public class UserInfo extends Command {
         eb.setColor(Color.ORANGE);
         eb.setTitle(user.getName());
 
+        eb.addField("**Look:**", user.getHead().emoji + "\n" + user.getUpper().emoji + (user.getUpper() instanceof Clothing && ((Clothing) user.getUpper()).isTwoInOne() ? "" : "\n" + user.getTrousers().emoji) + "\n" + user.getShoes().emoji, false);
 
+        eb.addField("**Coins:**", getCoinsString(user), false);
+        eb.addField("**Donuts**", getDonutsString(user), false);
+
+
+        eb.addField("Level", user.getLevel() + "", true);
+        eb.addField("Rank", "", true);
+        eb.setTimestamp(OffsetDateTime.now());
+        event.reply(eb.build());
+
+
+
+    }
+
+    private String getCoinsString(DonutUser user){
         String coins = user.getCoins() + " | ";
         int temp = (int) user.getCoins();
 
@@ -86,14 +96,21 @@ public class UserInfo extends Command {
         for (int i = 0; i < current; i++) {
             coins += ":dollar: ";
         }
-        eb.addField("Coins", coins + "", false);
+        return coins;
+    }
 
+    private String getDonutsString(DonutUser user){
+        int donutsCount = 0;
+        for (Item item : user.getInventory()){
+            if (item.name.toLowerCase().contains("donut"))
+                donutsCount += item.getStack();
+        }
 
-        String donuts = "";
-        //String donuts = user.getDonuts() + " | ";
-        //temp = user.getDonuts();
-        step = 600;
-        current = (temp / step);
+        String donuts = donutsCount + " | ";
+        int temp = donutsCount;
+
+        int step = 600;
+        int current = (temp / step);
         for (int i = 0; i < current; i++) {
             donuts += ":articulated_lorry: ";
         }
@@ -116,13 +133,6 @@ public class UserInfo extends Command {
         for (int i = 0; i < current; i++) {
             donuts += ":doughnut: ";
         }
-        eb.addField("Donuts", donuts + "", false);
-
-
-
-        eb.addField("Level", user.getLevel() + "", false);
-        eb.addField("Rank", "", false);
-        event.reply(eb.build());
-
+        return donuts;
     }
 }

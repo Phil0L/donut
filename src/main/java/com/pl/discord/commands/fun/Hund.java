@@ -2,6 +2,7 @@ package com.pl.discord.commands.fun;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.pl.discord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 
@@ -14,11 +15,16 @@ public class Hund extends Command {
         super.aliases = new String[]{"hund","dh"};
         super.category = new Category("Fun");
         super.arguments = "[name]";
-        super.help = "H.U.N.D";
+        super.help = "" +
+                "%duhund : replys with \"Du Hund\"\n" +
+                "%duhund @[username] : replys with \"Du Hund\" to the mentioned user\n" +
+                "This is an insider pls dont be confused";
     }
 
     @Override
     protected void execute(CommandEvent event) {
+        Main.log(event, "Hund");
+
         event.getTextChannel().deleteMessageById(event.getTextChannel().getLatestMessageId()).queue();
 
         if (event.getArgs().isEmpty()) {

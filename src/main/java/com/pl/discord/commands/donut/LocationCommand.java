@@ -3,22 +3,26 @@ package com.pl.discord.commands.donut;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.pl.discord.Main;
-import com.pl.discord.objects.Location;
+import com.pl.discord.objects.locations.Location;
 import com.pl.discord.objects.locations.*;
 import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class LocationCommand extends Command {
     ArrayList<Location> locations;
 
     public LocationCommand() {
         super.name = "location";
-        super.aliases = new String[]{"locations","loc","store","stores"};
+        super.aliases = new String[]{"locations", "loc", "store", "stores"};
         super.category = new Category("Donut");
         super.arguments = "[type]";
-        super.help = "enteres a location";
+        super.help = "" +
+                "%location : shows the list of locations\n" +
+                "%location [location] : enters the provided location";
+
         this.locations = new ArrayList<>();
         this.locations.add(new Bakery());
         this.locations.add(new Supermarket());
@@ -31,40 +35,70 @@ public class LocationCommand extends Command {
 
     @Override
     protected void execute(CommandEvent event) {
-        if (Main.getServer(event.getGuild()) != -1) {
-            int i = Main.getServer(event.getGuild());
-            if (Main.server.get(i).getMember(event.getMember()) != -1) {
-                int j = Main.server.get(i).getMember(event.getMember());
-                if (event.getArgs().isEmpty()) {
-                    // show locations
-                    printStores(event);
-                } else {
-                    //enter location
-                    if (getLocationByName(event.getArgs()) != null) {
-                        enter(getLocationByName(event.getArgs()), event);
-                    } else
-                        event.reply(new EmbedBuilder().setTitle("No such location").setColor(Color.RED).build());
-                }
+        Main.log(event, "Location");
+
+        if (Main.getDonutUser(event.getGuild(), event.getMember()) != null) {
+            if (event.getArgs().isEmpty()) {
+                // show locations
+                printStores(event);
             } else {
-                event.reply(new EmbedBuilder().setColor(Color.RED).setTitle("You are not registered. Use %enter to register in Donut Kingdom").build());
+                //enter location
+                if (getLocationByName(event.getArgs()) != null) {
+                    enter(getLocationByName(event.getArgs()), event);
+                } else
+                    event.reply(new EmbedBuilder().setTitle("No such location").setColor(Color.RED).build());
             }
         } else {
             event.reply(new EmbedBuilder().setColor(Color.RED).setTitle("You are not registered. Use %enter to register in Donut Kingdom").build());
         }
+
     }
 
     private void enter(Location loc, CommandEvent event) {
-        if (loc.isOpen()){
-            if (loc.stock.size() <= 6)
+        if (loc.open()) {
+            loc.checkForEmpty();
+            if (loc.stock.size() < loc.restockAt)
                 loc.restock();
             EmbedBuilder eb = new EmbedBuilder();
             eb.setTitle(loc.emoji + " " + loc.name + ":").setColor(Color.ORANGE);
+            eb.addBlankField(false);
             for (int k = 0; k < loc.stock.size(); k++) {
-                eb.addField(loc.stock.get(k).emoji + " " + loc.stock.get(k).name + " (x" + loc.stock.get(k).stack + ")", loc.stock.get(k).command, false);
+                switch (loc.getName()) {
+                    case "Bakery":
+                    case "Supermarket":
+                    case "Gas station":
+                        eb.addField(loc.getEmoji() + " **" + loc.stock.get(k).name + "** \nstocked: **" + loc.stock.get(k).stack + "** \nprize: **" + loc.stock.get(k).prize + "** coins", loc.stock.get(k).command, true);
+                        if (k % 3 == 2)
+                            eb.addBlankField(false);
+                        break;
+                    case "Hardware store":
+                        break;
+                    case "Clothing store":
+                        eb.addField(loc.getEmoji() + " **" + loc.stock.get(k).name + "** \nprize: **" + loc.stock.get(k).prize + "** coins", loc.stock.get(k).command, true);
+                        if (k % 3 == 2)
+                            eb.addBlankField(false);
+                        break;
+                    default:
+                        break;
+                }
+
             }
-            event.reply(eb.build());
-        }else {
-            event.reply(new EmbedBuilder().setColor(Color.RED).setTitle(loc.name + "is not open").build());
+            switch (loc.getName()) {
+                case "Casino":
+                    eb.addField("**Item spin**", "50 coins:\n%itemspin", true);
+                    eb.addField("**Coin gamble**", "100 coins:\n%coingamble", true);
+                    event.reply(eb.build());
+                    break;
+                default:
+                    event.reply(eb.build());
+                    break;
+
+            }
+
+            Main.getDonutUser(event.getGuild(), event.getMember()).enterLocation(loc);
+            Main.getDonutServer(event.getGuild()).save(Main.getDonutUser(event.getGuild(), event.getMember()));
+        } else {
+            event.reply(new EmbedBuilder().setColor(Color.RED).setTitle(loc.name + " is closed").build());
         }
 
     }
@@ -72,10 +106,9 @@ public class LocationCommand extends Command {
     private void printStores(CommandEvent event) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Locations:").setColor(Color.ORANGE);
+        eb.addField("**Time: " + getTime() + " o'clock " + getPeriod() + "**", " ", false);
         for (int k = 0; k < locations.size(); k++) {
             eb.addField(locations.get(k).emoji + " " + locations.get(k).name, locations.get(k).getCommand(), true);
-            if (k % 3 == 2)
-                eb.addBlankField(false);
         }
         event.reply(eb.build());
     }
@@ -89,68 +122,16 @@ public class LocationCommand extends Command {
         return null;
     }
 
-    /*private void buy(CommandEvent event, int amount) {
-        new Thread(() -> {
-            EmbedBuilder eb = new EmbedBuilder();
-            eb.setColor(Color.ORANGE);
-            eb.setTitle("start");
-            Message message = event.getTextChannel().sendMessage(eb.build()).complete();
-            try {
-                Ping.addThread();
-                eb.setTitle(".....:person_walking: **Going to the store**");
-                message.editMessage(eb.build()).queue();
-                Thread.sleep((long) ((Math.random() * 500) + 1000));
+    private String getTime() {
+        Calendar cal = Calendar.getInstance();
+        int now = (int) (cal.get(Calendar.MINUTE) / 2.5);
+        return (now > 12 ? String.valueOf(now - 12) : String.valueOf(now));
 
-                eb.setTitle("....:person_walking:. **Going to the store**");
-                message.editMessage(eb.build()).queue();
-                Thread.sleep((long) ((Math.random() * 500) + 1000));
+    }
 
-                eb.setTitle("...:person_walking:.. **Going to the store**");
-                message.editMessage(eb.build()).queue();
-                Thread.sleep((long) ((Math.random() * 500) + 1000));
-
-                eb.setTitle("..:person_walking:... **Going to the store**");
-                message.editMessage(eb.build()).queue();
-                Thread.sleep((long) ((Math.random() * 500) + 1000));
-
-                eb.setTitle(".:person_walking:.... **Going to the store**");
-                message.editMessage(eb.build()).queue();
-                Thread.sleep((long) ((Math.random() * 500) + 1000));
-
-                eb.setTitle(":person_walking:..... **Going to the store**");
-                message.editMessage(eb.build()).queue();
-                Thread.sleep((long) ((Math.random() * 500) + 1000));
-
-                String message2 = ":moneybag: **Buying donuts** ";
-                for (int i = 0; i < amount; i++) {
-                    eb.setTitle(":person_walking:..... **Going to the donut store**\n" + message2);
-                    message.editMessage(eb.build()).queue();
-                    Thread.sleep((long) (((Math.random() * 500) + 1000)));
-                    message2 += ":doughnut:";
-                    message2 = message2.replaceAll(":doughnut::doughnut::doughnut::doughnut::doughnut::doughnut:", ":package:");
-                    message2 = message2.replaceAll(":package::package::package::package::package::package::package::package::package::package:", ":shopping_cart:");
-
-                    int j = Main.getServer(event.getGuild());
-                    int k = Main.server.get(j).getMember(event.getMember());
-                    Main.server.get(j).getUser().get(k).removeCoins(30);
-                    Main.server.get(j).getUser().get(k).addDonuts(1);
-
-                }
-
-                eb.setTitle(":person_walking:..... **Going to the donut store**\n" + message2);
-                message.editMessage(eb.build()).queue();
-                Thread.sleep((long) (((Math.random() * 500) + 1000)));
-
-
-                eb.setColor(Color.ORANGE);
-                eb.setTitle(":person_walking:..... **Going to the donut store**\n" + message2 + "\n" + event.getMember().getEffectiveName() + " has bought **" + amount + "** donuts");
-                message.editMessage(eb.build()).queue();
-
-                Ping.removeThread();
-            }catch (InterruptedException ignored){
-
-            }
-
-        }).start();
-    }*/
+    private String getPeriod() {
+        Calendar cal = Calendar.getInstance();
+        int now = (int) (cal.get(Calendar.MINUTE) / 2.5);
+        return (now > 12 ? "pm" : "am");
+    }
 }

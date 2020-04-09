@@ -2,7 +2,8 @@ package com.pl.discord.commands.voice.sound;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import com.pl.discord.commands.simple.Ping;
+import com.pl.discord.Main;
+import com.pl.discord.commands.util.Ping;
 import com.pl.discord.commands.voice.sound.Listeners.AudioReceiveListener;
 import com.pl.discord.commands.voice.sound.Listeners.AudioSendListener;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -30,24 +31,27 @@ public class Clip extends Command {
         super.aliases = new String[]{"save"};
         super.category = new Category("Sound");
         super.arguments = "[time] [name]";
-        super.help = "creates a clip of the [time] last seconds";
+        super.help = "%clip [x] : creates a clip of the x last seconds\n" +
+                "%clip [x] [name] : you can add an additional name";
     }
 
     @Override
     protected void execute(CommandEvent event) {
+        Main.log(event, "Clip");
 
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Color.RED);
 
         if (event.getGuild().getAudioManager().getConnectedChannel() == null) {
-            eb.setTitle("I wasnt recording");
+            eb.setTitle("I wasnt recording. type %record to start recording");
             event.reply(eb.build());
-            //return;
+            return;
         }
 
-        if (event.getArgs() == null){
+        if (event.getArgs() == null) {
             eb.setTitle("You have to provide a time");
-            event.reply(eb.build());} else {
+            event.reply(eb.build());
+        } else {
             args = event.getArgs().split(" ");
         }
 
@@ -59,8 +63,6 @@ public class Clip extends Command {
             event.reply(eb.build());
             return;
         }
-
-
 
         if (time <= 0) {
             eb.setTitle("Time must be greater than 0");
@@ -84,18 +86,15 @@ public class Clip extends Command {
         }
 
         File dest;
+        File folder;
         try {
-
-
-            if (new File("/var/www/html/").exists())
-                dest = new File("./var/www/html/" + getPJSaltString() + ".mp3");
-            else
-                dest = new File("./recordings/" + getPJSaltString() + ".mp3");
-            System.out.println(dest.getAbsolutePath());
-
+            dest = new File("./recordings/" + getPJSaltString() + ".mp3");
+            folder = new File("./recordings");
+            if (!folder.exists())
+                folder.mkdir();
             byte[] voiceData;
 
-            if (time > 0 && time <= ah.PCM_MINS * 60 * 2) {
+            if (time > 0 && time <= AudioReceiveListener.PCM_MINS * 60 * 2) {
                 voiceData = ah.getUncompVoice(time);
                 voiceData = encodePcmToMp3(voiceData);
 
@@ -107,14 +106,9 @@ public class Clip extends Command {
             fos.write(voiceData);
             fos.close();
 
-            System.out.format("Saving audio file '%s' from %s on %s of size %f MB\n",
-                    dest.getName(), guild.getAudioManager().getConnectedChannel().getName(), guild.getName(), (double) dest.length() / 1024 / 1024);
-
             if (dest.length() / 1024 / 1024 < 8) {
                 final TextChannel channel = tc;
-                tc.sendFile(dest).queue(null, (Throwable) -> {
-                    tc.sendMessage("I don't have permissions to send files in " + channel.getName() + "!").queue();
-                });
+                tc.sendFile(dest).queue(null, (Throwable) -> tc.sendMessage("I don't have permissions to send files in " + channel.getName() + "!").queue());
 
                 new Thread(() -> {
                     try {
@@ -129,19 +123,6 @@ public class Clip extends Command {
 
                 }).start();
 
-            } else {
-                tc.sendMessage("http://DiscordEcho.com/" + dest.getName()).queue();
-
-                new Thread(() -> {
-                    try {
-                        sleep(1000 * 60 * 60);
-                    } catch (Exception ex) {
-                    }    //1 hour life for files stored on web server
-
-                    dest.delete();
-                    System.out.println("\tDeleting file " + dest.getName() + "...");
-
-                }).start();
             }
 
         } catch (Exception ex) {
@@ -155,7 +136,7 @@ public class Clip extends Command {
 
         try {
             return args[1];
-        } catch (IndexOutOfBoundsException ignored){
+        } catch (IndexOutOfBoundsException ignored) {
         }
 
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";

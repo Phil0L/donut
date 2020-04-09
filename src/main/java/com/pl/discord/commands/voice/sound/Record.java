@@ -2,6 +2,7 @@ package com.pl.discord.commands.voice.sound;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.pl.discord.Main;
 import com.pl.discord.commands.voice.sound.Listeners.AudioReceiveListener;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
@@ -18,19 +19,19 @@ public class Record extends Command {
         super.aliases = new String[]{"rec", "r"};
         super.category = new Category("Sound");
         super.arguments = "";
-        super.help = "records voice";
+        super.help = "%record : starts recording the channel the bot is in";
     }
 
     @Override
     protected void execute(CommandEvent event) {
+        Main.log(event, "Record");
+
         if (event.getGuild().getAudioManager().isConnected())
             joinVoiceChannel(Objects.requireNonNull(event.getMember().getVoiceState().getChannel()), true, event);
 
     }
 
     public static void joinVoiceChannel(VoiceChannel vc, boolean warning, CommandEvent event) {
-        System.out.format("Joining '%s' voice channel in %s\n", vc.getName(), vc.getGuild().getName());
-
         //send alert to correct users in the voice channel
         alert(vc, event);
 

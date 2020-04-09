@@ -1,7 +1,8 @@
-package com.pl.discord.commands.simple;
+package com.pl.discord.commands.util;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.pl.discord.Main;
 import com.pl.discord.commands.voice.music.handler.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 
@@ -15,11 +16,16 @@ public class Stop extends Command {
         super.aliases = new String[]{};
         super.category = new Category("Utilities");
         super.arguments = "[action]";
-        super.help = "stops an action (actions: rec, play, voice )";
+        super.help = "" +
+                "%stop rec : stops the bots recording | aliases: %stop r\n" +
+                "%stop play : stops whatever the bot is playing | aliases : %stop p, %stop song, %stop sound, %stop music\n" +
+                "%stop voice : simply stops everything to do with a voice channel | aliases: %stop v, %stop channel, %stop vc, %stop voicechannel";
     }
 
     @Override
     protected void execute(CommandEvent event) {
+        Main.log(event, "Stop");
+
         if (event.getArgs().isEmpty())
             event.reply("You have to provide the type of action you want to stop");
         else {

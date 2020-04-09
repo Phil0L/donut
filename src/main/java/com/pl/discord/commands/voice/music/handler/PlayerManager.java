@@ -43,7 +43,7 @@ public class PlayerManager {
         return musicManager;
     }
 
-    public void loadAndPlaySpotify(TextChannel channel, String trackUrl){
+    public void loadAndQueueSpotify(TextChannel channel, String trackUrl){
         GuildMusicManager musicManager = getGuildMusicManager(channel.getGuild());
         musicManager.player.setVolume(10);
 
@@ -72,26 +72,81 @@ public class PlayerManager {
         });
     }
 
-    public void loadAndPlay(TextChannel channel, String trackUrl) {
+    public void loadAndPlaySpotify(TextChannel channel, String trackUrl){
         GuildMusicManager musicManager = getGuildMusicManager(channel.getGuild());
         musicManager.player.setVolume(10);
 
         playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
-                channel.sendMessage(new EmbedBuilder().setTitle(track.getInfo().title + "\nAdded to queue").setColor(Color.GREEN).setAuthor(track.getInfo().author).build()).queue();
+                musicManager.scheduler.playNow(track);
+            }
+
+            @Override
+            public void playlistLoaded(AudioPlaylist playlist) {
+
+                AudioTrack track = playlist.getTracks().get(0);
+                musicManager.scheduler.playNow(track);
+            }
+
+            @Override
+            public void noMatches() {
+
+            }
+
+            @Override
+            public void loadFailed(FriendlyException exception) {
+
+            }
+        });
+    }
+
+    public void loadAndQueueFirstSpotify(TextChannel channel, String trackUrl){
+        GuildMusicManager musicManager = getGuildMusicManager(channel.getGuild());
+        musicManager.player.setVolume(10);
+
+        playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
+            @Override
+            public void trackLoaded(AudioTrack track) {
+                musicManager.scheduler.queueFront(track);
+            }
+
+            @Override
+            public void playlistLoaded(AudioPlaylist playlist) {
+
+                AudioTrack track = playlist.getTracks().get(0);
+                musicManager.scheduler.queueFront(track);
+            }
+
+            @Override
+            public void noMatches() {
+
+            }
+
+            @Override
+            public void loadFailed(FriendlyException exception) {
+
+            }
+        });
+    }
+
+    public void loadAndPlay(TextChannel channel, String trackUrl) {
+        GuildMusicManager musicManager = getGuildMusicManager(channel.getGuild());
+        musicManager.player.setVolume(10);
+        
+
+        playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
+            @Override
+            public void trackLoaded(AudioTrack track) {
+                channel.sendMessage(new EmbedBuilder().setTitle(track.getInfo().title + "\nTrack added to queue").setColor(Color.GREEN).setAuthor(track.getInfo().author).build()).queue();
 
                 play(musicManager, track);
             }
 
             @Override
             public void playlistLoaded(AudioPlaylist playlist) {
-
-                for (AudioTrack track : playlist.getTracks()){
-                    play(musicManager, track);
-                }
-
-                channel.sendMessage(new EmbedBuilder().setTitle(playlist.getName() + "\nAdded to queue").setColor(Color.GREEN).build()).queue();
+                play(musicManager, playlist.getTracks().get(0));
+                channel.sendMessage(new EmbedBuilder().setTitle(playlist.getName() + "\nTrack added to queue").setColor(Color.GREEN).build()).queue();
 
             }
 
@@ -103,6 +158,33 @@ public class PlayerManager {
             @Override
             public void loadFailed(FriendlyException exception) {
                 channel.sendMessage(new EmbedBuilder().setTitle("Could not play " + trackUrl).setColor(Color.RED).build()).queue();
+            }
+        });
+
+    }
+
+    public void loadAndPlay(Guild guild, String trackUrl) {
+        GuildMusicManager musicManager = getGuildMusicManager(guild);
+        musicManager.player.setVolume(10);
+
+
+        playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
+            @Override
+            public void trackLoaded(AudioTrack track) {
+                play(musicManager, track);
+            }
+
+            @Override
+            public void playlistLoaded(AudioPlaylist playlist) {
+                play(musicManager, playlist.getTracks().get(0));
+            }
+
+            @Override
+            public void noMatches() {
+            }
+
+            @Override
+            public void loadFailed(FriendlyException exception) {
             }
         });
 

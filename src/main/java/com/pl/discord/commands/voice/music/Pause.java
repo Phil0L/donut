@@ -2,6 +2,7 @@ package com.pl.discord.commands.voice.music;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.pl.discord.Main;
 import com.pl.discord.commands.voice.music.handler.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 
@@ -13,12 +14,15 @@ public class Pause extends Command {
         super.name = "pause";
         super.aliases = new String[]{"resume"};
         super.category = new Category("Sound");
-        super.arguments = "/ %resume";
-        super.help = "pauses/resumes the song";
+        super.arguments = "";
+        super.help = "%pause : pauses the player\n" +
+                "%resume : resumes the bot";
     }
 
     @Override
     protected void execute(CommandEvent event) {
+        Main.log(event, "Pause");
+
         PlayerManager manager = PlayerManager.getInstance();
         if (event.getMessage().getContentRaw().equals("%pause")) {
             if (manager.getGuildMusicManager(event.getGuild()).player.isPaused()) {

@@ -2,6 +2,7 @@ package com.pl.discord.commands.fun;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.pl.discord.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.util.ArrayList;
@@ -13,11 +14,13 @@ public class FlipACoin extends Command {
         super.aliases = new String[]{"fac", "flip", "coin"};
         super.category = new Category("Fun");
         super.arguments = "";
-        super.help = "flips a coin";
+        super.help = "%fac : flips a coin";
     }
 
     @Override
     protected void execute(CommandEvent event) {
+        Main.log(event, "Flip a coin");
+
         if (Math.random() > 0.5) {
             //heads
             ArrayList<String> sample = new ArrayList<>();

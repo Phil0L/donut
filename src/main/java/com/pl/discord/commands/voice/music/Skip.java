@@ -2,6 +2,7 @@ package com.pl.discord.commands.voice.music;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.pl.discord.Main;
 import com.pl.discord.commands.voice.music.handler.PlayerManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 
@@ -14,11 +15,14 @@ public class Skip extends Command {
         super.aliases = new String[]{"next"};
         super.category = new Category("Sound");
         super.arguments = "[amount]";
-        super.help = "skips songs";
+        super.help = "%skip : skips the current song\n" +
+                "%skip [x] : skips x songs";
     }
 
     @Override
     protected void execute(CommandEvent event) {
+        Main.log(event, "Skip");
+
         PlayerManager manager = PlayerManager.getInstance();
         if (event.getArgs().isEmpty()) {
             manager.getGuildMusicManager(event.getGuild()).scheduler.nextTrack();
